@@ -1,0 +1,107 @@
+version: 2
+
+jobs:
+  test-node8:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:8
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            # Fallback cache to be used
+            - v1-npm-deps-
+      - run: npm install
+      - run: npm test
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  test-node10:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:10
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            # Fallback cache to be used
+            - v1-npm-deps-
+      - run: npm install
+      - run: npm test
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  test-node12:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:12
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            # Find a cache corresponding to this specific package-lock.json
+            - v1-npm-deps-{{ checksum "package-lock.json" }}
+            # Fallback cache to be used
+            - v1-npm-deps-
+      - run: npm install
+      - run: npm test
+      - save_cache:
+          key: v1-npm-deps-{{ checksum "package-lock.json" }}
+          paths:
+            - ./node_modules
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
+
+  deploy:
+    working_directory: ~/repo
+    docker:
+      - image: circleci/node:10
+    steps:
+      - attach_workspace:
+          at: ~/repo
+      - run:
+          name: Authenticate with registry
+          command: echo "//registry.npmjs.org/:_authToken=$npm_TOKEN" > ~/repo/.npmrc
+      - run: npm publish
+            
+workflows:
+  version: 2
+  test-publish:
+    jobs:
+      - test-node8:
+          filters:
+            tags:
+              only: /^v.*/
+      - test-node10:
+          filters:
+            tags:
+              only: /^v.*/
+      - test-node12:
+          filters:
+            tags:
+              only: /^v.*/
+      - deploy:
+          requires:
+            - test-node8
+            - test-node10
+            - test-node12
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
