@@ -1,0 +1,11 @@
+{
+  "generator-ts-np": {
+    "promptValues": {
+      "npmScope": "",
+      "githubUsername": "",
+      "ownerFullName": "",
+      "ownerEmail": "",
+      "twitterUsername": ""
+    }
+  }
+}
