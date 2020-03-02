@@ -1,6 +1,6 @@
 {
   "name": "node-on24",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "API client for the On24 webinar platform.",
   "main": "dist/index.js",
   "files": [
