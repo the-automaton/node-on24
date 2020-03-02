@@ -21,7 +21,7 @@ export abstract class ClientBase {
     return new Promise((resolve, reject) => {
       this.needle.get(url, options, (err, res, body) => {
         if (err) return reject(err);
-        if (res.statusCode && res.statusCode > 299) return reject(new ApiError(res, body));
+        if (res.statusCode && ![200, 404].includes(res.statusCode)) return reject(new ApiError(res, body));
         resolve(body);
       });
     });

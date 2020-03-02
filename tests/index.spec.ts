@@ -109,6 +109,19 @@ describe('client-base', () => {
       }
     });
 
+    test('does not throw api error on 404', async (done) => {
+      const client = new On24(mockCreds, mockNeedle);
+
+      // Program the needle mock to respond.
+      const expectedApiErrRes = {statusCode: 404};
+      mockNeedle.get.callsArgWith(2, null, expectedApiErrRes, {});
+
+      // Expect the mock to have been called with the expected access headers.
+      await client.analytics.listEvents();
+      sinon.assert.calledWith(mockNeedle.get, sinon.match.any);
+      done();
+    });
+
   });
 
   describe('post', () => {
