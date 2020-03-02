@@ -188,7 +188,7 @@ describe('client-base', () => {
 
       // Program the needle mock to respond with an API error.
       const expectedApiErrBody = 'some-api-err';
-      const expectedApiErrRes = {statusCode: 400};
+      const expectedApiErrRes = {statusCode: 400, statusMessage: 'Bad request.'};
       mockNeedle.post.callsArgWith(3, null, expectedApiErrRes, expectedApiErrBody);
 
       try {
@@ -196,6 +196,7 @@ describe('client-base', () => {
       } catch (e) {
         expect(e.response).toBe(expectedApiErrRes);
         expect(e.body).toBe(expectedApiErrBody);
+        expect(e.toString()).toContain(expectedApiErrRes.statusMessage);
         done();
       }
     });
@@ -265,7 +266,7 @@ describe('client-base', () => {
       const client = new On24(mockCreds, mockNeedle);
 
       // Program the needle mock to respond with an API error.
-      const expectedApiErrBody = 'some-api-err';
+      const expectedApiErrBody = {message: 'some-error-message'};
       const expectedApiErrRes = {statusCode: 400};
       mockNeedle.patch.callsArgWith(3, null, expectedApiErrRes, expectedApiErrBody);
 
@@ -274,6 +275,7 @@ describe('client-base', () => {
       } catch (e) {
         expect(e.response).toBe(expectedApiErrRes);
         expect(e.body).toBe(expectedApiErrBody);
+        expect(e.toString()).toContain(expectedApiErrBody.message);
         done();
       }
     });
