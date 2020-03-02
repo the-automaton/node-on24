@@ -2,7 +2,7 @@
 
 A node.js API client for the On24 Webinar Engagement platform.
 
-![](https://github.com/the-automaton/node-on24/workflows/Build/badge.svg) [![](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
+[![CircleCI](https://circleci.com/gh/the-automaton/node-on24/tree/master.svg?style=svg)](https://circleci.com/gh/the-automaton/node-on24/tree/master) ![](https://github.com/the-automaton/node-on24/workflows/Build/badge.svg) [![](https://img.shields.io/badge/TypeScript-Ready-blue.svg)](https://www.typescriptlang.org/)
 
 The organization of this API client mimics the way On24 conceives of its API in
 its documentation (for better or for worse). If you're wondering where those
